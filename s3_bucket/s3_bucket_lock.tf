@@ -4,7 +4,7 @@ provider "aws" {
 }
 # create s3 bucket
 resource "aws_s3_bucket" "s3_bucket" {
-  bucket = "sayantan-cicd-tf-eks" # change this
+  bucket = "testb-cicd-tf-eks" # change this
 }
 
 resource "aws_dynamodb_table" "terraform_lock-1" {

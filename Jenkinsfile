@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout SCM'){
             steps{
                 script{
-                    checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Chukkavijay/jenkins-tf-eks.git']])
+                    checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Chukkavijay/onlinecode.git']])
                 }
             }
         }
@@ -70,5 +70,62 @@ pipeline {
                 }
             }
         }
+    }
+}
+====================================================================================
+pipeline {
+    agent any
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_DEFAULT_REGION = "us-east-1"
+    }
+    stages {
+        stage('Checkout SCM'){
+            steps{
+                script{
+                    checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Chukkavijay/onlinecode.git']])
+                }
+            }
+        }
+        stage('Initializing Terraform'){
+            steps{
+                script{
+                    dir('EKS'){
+                        sh 'terraform init'
+                    }
+                }
+            }
+        }
+        stage('Previewing the Infra using Terraform'){
+            steps{
+                script{
+                    dir('EKS'){
+                        sh 'terraform plan'
+                    }
+                }
+            }
+        }
+        stage('Destroying Nginx Application') {
+            steps{
+                script{
+                    dir('EKS/ConfigurationFiles') {
+                        sh 'aws eks update-kubeconfig --name my-eks-cluster'
+                        sh 'kubectl delete -f service.yaml'
+                        sh 'kubectl delete -f deployment.yaml'
+                    }
+                }
+            }
+        }        
+        stage('Destroying an EKS Cluster'){
+            steps{
+                script{
+                    dir('EKS') {
+                        sh 'terraform destroy --auto-approve'
+                    }
+                }
+            }
+        }
+
     }
 }
