@@ -16,11 +16,11 @@
 
 {{ define "product" }}
 {{ template "header" . }}
-<div {{ with $.platform_css }} class="{{.}}" {{ end }}>
+<!-- <div {{ with $.platform_css }} class="{{.}}" {{ end }}>
   <span class="platform-flag">
     {{$.platform_name}}
   </span>
-</div>
+</div> -->
 
 <main role="main">
   <div class="h-product container">
@@ -56,11 +56,11 @@
   </div>
   <div>
     {{ if $.recommendations}}
-      {{ template "recommendations" $.recommendations }}
+    {{ template "recommendations" $.recommendations }}
     {{ end }}
   </div>
   <div class="ad">
-   {{ with $.ad }}{{ template "text_ad" . }}{{ end }}
+    {{ with $.ad }}{{ template "text_ad" . }}{{ end }}
   </div>
 </main>
 {{ template "footer" . }}
