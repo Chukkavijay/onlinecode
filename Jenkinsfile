@@ -2,20 +2,19 @@ pipeline {
     agent any
     
     environment {
-    DOCKERHUB_CREDENTIALS = credentials('docker-chaitu')
-    }
-    
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    }        
     stages {
-        
-        stage('Git Checkout') {
-            steps {
-                git branch: 'feature/SCRUM-51-Make-it-Local-Like-we-developed-it', credentialsId: 'github-chaitanya-pandeswara', url: 'https://github.com/chaitanya-pandeswara/online-boutique-microservices-code.git'
+        stage('Checkout SCM'){
+            steps{
+                script{
+                    checkout scmGit(branches: [[name: '*/feature/SCRUM-45-Make-it-Local-Like-we-developed-it']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Chukkavijay/onlinecode.git']])
+                }
             }
         }
-
         stage('Docker Login') {
             steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'echo $DOCKERHUB_CREDENTIALS | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
         
@@ -24,17 +23,17 @@ pipeline {
                 script {
                     dir('src/adservice') {
                         
-                        sh 'docker build -t chaitu685/online-boutique:adservice-${BUILD_NUMBER}.0 .'
+                        sh 'docker build -t chukkavijay/online-boutique:adservice-${BUILD_NUMBER}.0 .'
                     }    
                         
                        // Below line is to fail the stage if vulnerabilities found are HIGH and CRITICAL
-                       // sh 'trivy image chaitu685/online-boutique:adservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
+                       // sh 'trivy image chukkavijay/online-boutique:adservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
                        
                        sh """
-                       trivy image --format template --template "@/usr/bin/html.tpl" -o adservice-report.html chaitu685/online-boutique:adservice-${BUILD_NUMBER}.0 --timeout 15m
+                       trivy image --format template --template "@/usr/bin/html.tpl" -o adservice-report.html chukkavijay/online-boutique:adservice-${BUILD_NUMBER}.0 --timeout 15m
                        """
                         
-                       sh 'docker push chaitu685/online-boutique:adservice-${BUILD_NUMBER}.0'
+                       sh 'docker push chukkavijay/online-boutique:adservice-${BUILD_NUMBER}.0'
                 }
             
                 publishHTML(target: [
@@ -53,17 +52,17 @@ pipeline {
                 script {
                     dir('src/cartservice/src') {
                         
-                        sh 'docker build -t chaitu685/online-boutique:cartservice-${BUILD_NUMBER}.0 .'
+                        sh 'docker build -t chukkavijay/online-boutique:cartservice-${BUILD_NUMBER}.0 .'
                     }    
                         
                        // Below line is to fail the stage if vulnerabilities found are HIGH and CRITICAL
-                       // sh 'trivy image chaitu685/online-boutique:cartservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
+                       // sh 'trivy image chukkavijay/online-boutique:cartservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
                        
                        sh """
-                       trivy image --format template --template "@/usr/bin/html.tpl" -o cartservice-report.html chaitu685/online-boutique:cartservice-${BUILD_NUMBER}.0 --timeout 15m
+                       trivy image --format template --template "@/usr/bin/html.tpl" -o cartservice-report.html chukkavijay/online-boutique:cartservice-${BUILD_NUMBER}.0 --timeout 15m
                        """
                         
-                       sh 'docker push chaitu685/online-boutique:cartservice-${BUILD_NUMBER}.0'
+                       sh 'docker push chukkavijay/online-boutique:cartservice-${BUILD_NUMBER}.0'
                 }
             
                 publishHTML(target: [
@@ -82,17 +81,17 @@ pipeline {
                 script {
                     dir('src/checkoutservice') {
                         
-                        sh 'docker build -t chaitu685/online-boutique:checkoutservice-${BUILD_NUMBER}.0 .'
+                        sh 'docker build -t chukkavijay/online-boutique:checkoutservice-${BUILD_NUMBER}.0 .'
                     }    
                         
                        // Below line is to fail the stage if vulnerabilities found are HIGH and CRITICAL
-                       // sh 'trivy image chaitu685/online-boutique:checkoutservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
+                       // sh 'trivy image chukkavijay/online-boutique:checkoutservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
                        
                        sh """
-                       trivy image --format template --template "@/usr/bin/html.tpl" -o checkoutservice-report.html chaitu685/online-boutique:checkoutservice-${BUILD_NUMBER}.0 --timeout 15m
+                       trivy image --format template --template "@/usr/bin/html.tpl" -o checkoutservice-report.html chukkavijay/online-boutique:checkoutservice-${BUILD_NUMBER}.0 --timeout 15m
                        """
                         
-                       sh 'docker push chaitu685/online-boutique:checkoutservice-${BUILD_NUMBER}.0'
+                       sh 'docker push chukkavijay/online-boutique:checkoutservice-${BUILD_NUMBER}.0'
                 }
             
                 publishHTML(target: [
@@ -111,17 +110,17 @@ pipeline {
                 script {
                     dir('src/currencyservice') {
                         
-                        sh 'docker build -t chaitu685/online-boutique:currencyservice-${BUILD_NUMBER}.0 .'
+                        sh 'docker build -t chukkavijay/online-boutique:currencyservice-${BUILD_NUMBER}.0 .'
                     }    
                         
                        // Below line is to fail the stage if vulnerabilities found are HIGH and CRITICAL
-                       // sh 'trivy image chaitu685/online-boutique:currencyservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
+                       // sh 'trivy image chukkavijay/online-boutique:currencyservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
                        
                        sh """
-                       trivy image --format template --template "@/usr/bin/html.tpl" -o currencyservice-report.html chaitu685/online-boutique:currencyservice-${BUILD_NUMBER}.0 --timeout 15m
+                       trivy image --format template --template "@/usr/bin/html.tpl" -o currencyservice-report.html chukkavijay/online-boutique:currencyservice-${BUILD_NUMBER}.0 --timeout 15m
                        """
                         
-                       sh 'docker push chaitu685/online-boutique:currencyservice-${BUILD_NUMBER}.0'
+                       sh 'docker push chukkavijay/online-boutique:currencyservice-${BUILD_NUMBER}.0'
                 }
             
                 publishHTML(target: [
@@ -140,17 +139,17 @@ pipeline {
                 script {
                     dir('src/emailservice') {
                         
-                        sh 'docker build -t chaitu685/online-boutique:emailservice-${BUILD_NUMBER}.0 .'
+                        sh 'docker build -t chukkavijay/online-boutique:emailservice-${BUILD_NUMBER}.0 .'
                     }    
                         
                        // Below line is to fail the stage if vulnerabilities found are HIGH and CRITICAL
-                       // sh 'trivy image chaitu685/online-boutique:emailservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
+                       // sh 'trivy image chukkavijay/online-boutique:emailservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
                        
                        sh """
-                       trivy image --format template --template "@/usr/bin/html.tpl" -o emailservice-report.html chaitu685/online-boutique:emailservice-${BUILD_NUMBER}.0 --timeout 15m
+                       trivy image --format template --template "@/usr/bin/html.tpl" -o emailservice-report.html chukkavijay/online-boutique:emailservice-${BUILD_NUMBER}.0 --timeout 15m
                        """
                         
-                       sh 'docker push chaitu685/online-boutique:emailservice-${BUILD_NUMBER}.0'
+                       sh 'docker push chukkavijay/online-boutique:emailservice-${BUILD_NUMBER}.0'
                 }
             
                 publishHTML(target: [
@@ -169,17 +168,17 @@ pipeline {
                 script {
                     dir('src/frontend') {
                         
-                        sh 'docker build -t chaitu685/online-boutique:frontend-${BUILD_NUMBER}.0 .'
+                        sh 'docker build -t chukkavijay/online-boutique:frontend-${BUILD_NUMBER}.0 .'
                     }    
                         
                        // Below line is to fail the stage if vulnerabilities found are HIGH and CRITICAL
-                       // sh 'trivy image chaitu685/online-boutique:frontend-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
+                       // sh 'trivy image chukkavijay/online-boutique:frontend-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
                        
                        sh """
-                       trivy image --format template --template "@/usr/bin/html.tpl" -o frontend-report.html chaitu685/online-boutique:frontend-${BUILD_NUMBER}.0 --timeout 15m
+                       trivy image --format template --template "@/usr/bin/html.tpl" -o frontend-report.html chukkavijay/online-boutique:frontend-${BUILD_NUMBER}.0 --timeout 15m
                        """
                         
-                       sh 'docker push chaitu685/online-boutique:frontend-${BUILD_NUMBER}.0'
+                       sh 'docker push chukkavijay/online-boutique:frontend-${BUILD_NUMBER}.0'
                 }
             
                 publishHTML(target: [
@@ -198,17 +197,17 @@ pipeline {
                 script {
                     dir('src/loadgenerator') {
                         
-                        sh 'docker build -t chaitu685/online-boutique:loadgenerator-${BUILD_NUMBER}.0 .'
+                        sh 'docker build -t chukkavijay/online-boutique:loadgenerator-${BUILD_NUMBER}.0 .'
                     }    
                         
                        // Below line is to fail the stage if vulnerabilities found are HIGH and CRITICAL
-                       // sh 'trivy image chaitu685/online-boutique:loadgenerator-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
+                       // sh 'trivy image chukkavijay/online-boutique:loadgenerator-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
                        
                        sh """
-                       trivy image --format template --template "@/usr/bin/html.tpl" -o loadgenerator-report.html chaitu685/online-boutique:loadgenerator-${BUILD_NUMBER}.0 --timeout 15m
+                       trivy image --format template --template "@/usr/bin/html.tpl" -o loadgenerator-report.html chukkavijay/online-boutique:loadgenerator-${BUILD_NUMBER}.0 --timeout 15m
                        """
                         
-                       sh 'docker push chaitu685/online-boutique:loadgenerator-${BUILD_NUMBER}.0'
+                       sh 'docker push chukkavijay/online-boutique:loadgenerator-${BUILD_NUMBER}.0'
                 }
             
                 publishHTML(target: [
@@ -227,17 +226,17 @@ pipeline {
                 script {
                     dir('src/paymentservice') {
                         
-                        sh 'docker build -t chaitu685/online-boutique:paymentservice-${BUILD_NUMBER}.0 .'
+                        sh 'docker build -t chukkavijay/online-boutique:paymentservice-${BUILD_NUMBER}.0 .'
                     }    
                         
                        // Below line is to fail the stage if vulnerabilities found are HIGH and CRITICAL
-                       // sh 'trivy image chaitu685/online-boutique:paymentservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
+                       // sh 'trivy image chukkavijay/online-boutique:paymentservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
                        
                        sh """
-                       trivy image --format template --template "@/usr/bin/html.tpl" -o paymentservice-report.html chaitu685/online-boutique:paymentservice-${BUILD_NUMBER}.0 --timeout 15m
+                       trivy image --format template --template "@/usr/bin/html.tpl" -o paymentservice-report.html chukkavijay/online-boutique:paymentservice-${BUILD_NUMBER}.0 --timeout 15m
                        """
                         
-                       sh 'docker push chaitu685/online-boutique:paymentservice-${BUILD_NUMBER}.0'
+                       sh 'docker push chukkavijay/online-boutique:paymentservice-${BUILD_NUMBER}.0'
                 }
             
                 publishHTML(target: [
@@ -256,17 +255,17 @@ pipeline {
                 script {
                     dir('src/productcatalogservice') {
                         
-                        sh 'docker build -t chaitu685/online-boutique:productcatalogservice-${BUILD_NUMBER}.0 .'
+                        sh 'docker build -t chukkavijay/online-boutique:productcatalogservice-${BUILD_NUMBER}.0 .'
                     }    
                         
                        // Below line is to fail the stage if vulnerabilities found are HIGH and CRITICAL
-                       // sh 'trivy image chaitu685/online-boutique:productcatalogservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
+                       // sh 'trivy image chukkavijay/online-boutique:productcatalogservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
                        
                        sh """
-                       trivy image --format template --template "@/usr/bin/html.tpl" -o productcatalogservice-report.html chaitu685/online-boutique:productcatalogservice-${BUILD_NUMBER}.0 --timeout 15m
+                       trivy image --format template --template "@/usr/bin/html.tpl" -o productcatalogservice-report.html chukkavijay/online-boutique:productcatalogservice-${BUILD_NUMBER}.0 --timeout 15m
                        """
                         
-                       sh 'docker push chaitu685/online-boutique:productcatalogservice-${BUILD_NUMBER}.0'
+                       sh 'docker push chukkavijay/online-boutique:productcatalogservice-${BUILD_NUMBER}.0'
                 }
             
                 publishHTML(target: [
@@ -285,17 +284,17 @@ pipeline {
                 script {
                     dir('src/recommendationservice') {
                         
-                        sh 'docker build -t chaitu685/online-boutique:recommendationservice-${BUILD_NUMBER}.0 .'
+                        sh 'docker build -t chukkavijay/online-boutique:recommendationservice-${BUILD_NUMBER}.0 .'
                     }    
                         
                        // Below line is to fail the stage if vulnerabilities found are HIGH and CRITICAL
-                       // sh 'trivy image chaitu685/online-boutique:recommendationservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
+                       // sh 'trivy image chukkavijay/online-boutique:recommendationservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
                        
                        sh """
-                       trivy image --format template --template "@/usr/bin/html.tpl" -o recommendationservice-report.html chaitu685/online-boutique:recommendationservice-${BUILD_NUMBER}.0 --timeout 15m
+                       trivy image --format template --template "@/usr/bin/html.tpl" -o recommendationservice-report.html chukkavijay/online-boutique:recommendationservice-${BUILD_NUMBER}.0 --timeout 15m
                        """
                         
-                       sh 'docker push chaitu685/online-boutique:recommendationservice-${BUILD_NUMBER}.0'
+                       sh 'docker push chukkavijay/online-boutique:recommendationservice-${BUILD_NUMBER}.0'
                 }
             
                 publishHTML(target: [
@@ -314,17 +313,17 @@ pipeline {
                 script {
                     dir('src/shippingservice') {
                         
-                        sh 'docker build -t chaitu685/online-boutique:shippingservice-${BUILD_NUMBER}.0 .'
+                        sh 'docker build -t chukkavijay/online-boutique:shippingservice-${BUILD_NUMBER}.0 .'
                     }    
                         
                        // Below line is to fail the stage if vulnerabilities found are HIGH and CRITICAL
-                       // sh 'trivy image chaitu685/online-boutique:shippingservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
+                       // sh 'trivy image chukkavijay/online-boutique:shippingservice-${BUILD_NUMBER}.0 --exit-code 1 --severity HIGH,CRITICAL --timeout 15m'
                        
                        sh """
-                       trivy image --format template --template "@/usr/bin/html.tpl" -o shippingservice-report.html chaitu685/online-boutique:shippingservice-${BUILD_NUMBER}.0 --timeout 15m
+                       trivy image --format template --template "@/usr/bin/html.tpl" -o shippingservice-report.html chukkavijay/online-boutique:shippingservice-${BUILD_NUMBER}.0 --timeout 15m
                        """
                         
-                       sh 'docker push chaitu685/online-boutique:shippingservice-${BUILD_NUMBER}.0'
+                       sh 'docker push chukkavijay/online-boutique:shippingservice-${BUILD_NUMBER}.0'
                 }
             
                 publishHTML(target: [
