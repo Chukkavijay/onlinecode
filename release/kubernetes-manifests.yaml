@@ -255,7 +255,7 @@ spec:
                 - ALL
             privileged: false
             readOnlyRootFilesystem: true
-          image: chaitu685/online-boutique:frontend-14.0
+          image: chukkavijay/online-boutique:frontend-7.0
           ports:
           - containerPort: 8080
           readinessProbe:
@@ -428,7 +428,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: chaitu685/online-boutique:productcatalogservice-1.0
+        image: chukkavijay/online-boutique:productcatalogservice-7.0
         ports:
         - containerPort: 3550
         env:
