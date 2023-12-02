@@ -428,7 +428,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: chukkavijay/online-boutique:productcatalogservice-7.0
+        image: chukkavijay/products_catalog:v1
         ports:
         - containerPort: 3550
         env:
