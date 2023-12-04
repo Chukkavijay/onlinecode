@@ -47,7 +47,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: chukkavijay/online-boutique:emailservice-3.0
+        image: chukkavijay/online-boutique:emailservice-6.0
         ports:
         - containerPort: 8080
         env:
@@ -112,7 +112,7 @@ spec:
                 - ALL
             privileged: false
             readOnlyRootFilesystem: true
-          image: chukkavijay/online-boutique:checkoutservice-3.0
+          image: chukkavijay/online-boutique:checkoutservice-6.0
           ports:
           - containerPort: 5050
           readinessProbe:
@@ -186,7 +186,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: chukkavijay/online-boutique:recommendationservice-3.0
+        image: chukkavijay/online-boutique:recommendationservice-6.0
         ports:
         - containerPort: 8080
         readinessProbe:
@@ -364,7 +364,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: chukkavijay/online-boutique:paymentservice-3.0
+        image: chukkavijay/online-boutique:paymentservice-6.0
         ports:
         - containerPort: 50051
         env:
@@ -428,7 +428,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: chukkavijay/online-boutique:productcatalogservice-3.0
+        image: chukkavijay/online-boutique:productcatalogservice-6.0
         ports:
         - containerPort: 3550
         env:
@@ -492,7 +492,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: chukkavijay/online-boutique:cartservice-3.0
+        image: chukkavijay/online-boutique:cartservice-6.0
         ports:
         - containerPort: 7070
         env:
@@ -584,7 +584,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: chukkavijay/online-boutique:loadgenerator-3.0
+        image: chukkavijay/online-boutique:loadgenerator-6.0
         env:
         - name: FRONTEND_ADDR
           value: "frontend:80"
@@ -627,7 +627,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: chukkavijay/online-boutique:currencyservice-3.0
+        image: chukkavijay/online-boutique:currencyservice-6.0
         ports:
         - name: grpc
           containerPort: 7000
@@ -691,7 +691,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: chukkavijay/online-boutique:shippingservice-3.0
+        image: chukkavijay/online-boutique:shippingservice-6.0
         ports:
         - containerPort: 50051
         env:
@@ -821,7 +821,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: chukkavijay/online-boutique:adservice-3.0
+        image: chukkavijay/online-boutique:adservice-6.0
         ports:
         - containerPort: 9555
         env:
